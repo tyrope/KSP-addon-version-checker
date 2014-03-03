@@ -7,7 +7,7 @@ How-to use
 ===
 Modders
 ---
-Include a \*.version file in your download with the JSON in example.version.
+Include a *.version file in your download with the JSON in example.version.
 Have an online version available with the most recent information.
 
 players
