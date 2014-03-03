@@ -7,8 +7,8 @@ How-to use
 ===
 Modders
 ---
-Include a version.info file in your root folder (/gamedata/modname/version.info) with the JSON in version-example.info.
-Have an online version available with the most updated version.
+Include a \*.version file in your download with the JSON in example.version.
+Have an online version available with the most recent information.
 
 players
 ---
