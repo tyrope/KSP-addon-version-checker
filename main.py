@@ -27,5 +27,11 @@ def main():
     cfg = Config(cf)
     print cfg.get('install_dir')
 
+
+    #Shutdown procedure
+    if cfg.need_save():
+        cfg.save()
+    sys.exit(0)
+
 if __name__ == '__main__':
     main()

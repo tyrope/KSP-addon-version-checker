@@ -72,6 +72,7 @@ class Config(object):
             with open(self.configFile, 'w') as f:
                 self.parser.write(f)
                 f.flush()
+            self.needs_save = False
 
 if __name__ == '__main__':
     print __doc__
