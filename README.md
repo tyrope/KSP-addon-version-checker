@@ -4,7 +4,7 @@ KSP-addon-version-checker
 A simple program that allow people to check their add-ons folder for updates.
 
 How-to use
----
+===
 Modders
 ---
 Include a version.info file in your root folder (/gamedata/modname/version.info) with the JSON in version-example.info.
