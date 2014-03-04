@@ -1,9 +1,10 @@
 {
-    "NAME": "Testing",
-    "URL": "http://example.com/mod_version.txt",
+    "NAME": "Example mod",
+    "URL": "http://example.com/mod.version",
     "VERSION": {
         "MAJOR": 0,
-        "MINOR": 0
+        "MINOR": 0,
+        "BUILD": 1
     }
 }
 
