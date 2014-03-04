@@ -1,13 +1,13 @@
 #coding: utf8
 """
 The versionComparator class uses 2
-provided version.info files and
+provided *.version files and
 allows comparing of the contents.
 """
 # Copyright 2014 Dimitri "Tyrope" Molenaars
 
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use self file except in compliance with the License.
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 
 #    http://www.apache.org/licenses/LICENSE-2.0
@@ -82,3 +82,4 @@ class versionComparator(object):
 
 if __name__ == '__main__':
     print __doc__
+
