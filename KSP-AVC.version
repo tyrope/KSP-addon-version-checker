@@ -1,10 +1,10 @@
 {
     "NAME": "KSP Add-on version checker",
-    "URL": "https://github.com/tyrope/KSP-addon-version-checker/blob/master/version.info",
+    "URL": "https://github.com/tyrope/KSP-addon-version-checker/blob/master/KSP-AVC.version",
     "VERSION": {
         "MAJOR": 0,
         "MINOR": 1,
-        "BUILD" : 1
+        "BUILD": 1
     }
 }
 
