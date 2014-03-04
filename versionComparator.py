@@ -19,49 +19,60 @@ allows comparing of the contents.
 # limitations under the License.
 
 import json, os
+from urllib2 import urlopen
 
 class versionComparator(object):
     """ Initialize the comparator. """
     def __init__(self, l, r):
         with open(l, 'r') as f:
             self.local = json.load(f)
-        with open(r, 'r') as f:
-            self.remote = json.load(f)
+        f = urlopen(r)
+        self.remote = json.load(f)
+        f.close()
 
-    """ Gets the version in a tuple from a decoded json file. """
-    def getVersion(json):
-        ver = json['VERSION']
-        return (ver['MAJOR'], ver['MINOR'])
-
-    """ Returns changes in major version.
-    0 = no change
-    1 = local file is outdated.
-    -1 = Either of the files are invalid. """
+    """ Are the major versions equal? """
     def compareMajor(self):
-        v1 = getVersion(self.local)[0]
-        v2 = getVersion(self.remote)[0]
-        if v1 == v2:
-            return 0
-        if v1 < v2:
-            return 1
+        return self.local['VERSION']['MAJOR'] == self.remote['VERSION']['MAJOR']
 
-    """ Returns changes in minor version.
-    0 = no change
-    1 = local file is outdated.
-    -1 = Either of the files are invalid. """
+    """ Are the minor versions equal? """
     def compareMinor(self):
-        v1 = getVersion(self.local)[1]
-        v2 = getVersion(self.remote)[1]
-        if v1 == v2:
-            return 0
-        if v1 < v2:
-            return 1
+        return self.local['VERSION']['MINOR'] == self.remote['VERSION']['MINOR']
+
+    """ Are the build numbers equal? """
+    def compareBuild(self):
+        return self.local['VERSION']['BUILD'] == self.remote['VERSION']['BUILD']
+
+    def getVersion(side):
+        if side in ('l','local'):
+            v = self.local
+        elif side in ('r', 'remote'):
+            v = self.remote
+        else:
+            return '0.0'
+        return '%s.%s.%s' % (
+            v['VERSION']['MAJOR'],
+            v['VERSION']['MINOR'])
+
+    def getBuild(side):
+        if side in ('l','local'):
+            v = self.local
+        elif side in ('r', 'remote'):
+            v = self.remote
+        else:
+            return '0'
+        return v['VERSION']['BUILD']
 
     """ Ensures the remote file is from the proper source.
-    If self returns false, the remote file failed loading
+    If this returns false, the remote file failed loading
     or something went terribly wrong. """
     def compareSource(self):
-        return self.localfile['URL'] == self.remote['URL']
+        return self.local['URL'] == self.remote['URL']
+
+    """ Ensures the remote file is for the same mod.
+    if this returns false, we're probably
+    downloading the wrong file. """
+    def compareName(self):
+        return self.local['NAME'] == self.remote['NAME']
 
 """ Gets the URL for the remote file as stated in the local file. """
 def getRemote(fle):
