@@ -32,14 +32,37 @@ def main():
     # Create config object.
     #TODO Don't hardcode the file name.
     cfg = config.Config(os.path.join(cfg_dir, 'default.cfg'))
-    print "Configuration file loaded."
+
+    print "+----------------------------------------------+"
+    print "| Kerbal Space Program Add-on Version Checker  |"
+    print "| This program is not made by Squad, nor is it |"
+    print "|        Officially recognized by them.        |"
+    print "+----------------------------------------------+"
+
+    try:
+        selfVersionLocal = os.path.join(os.path.expanduser('.'), 'KSP-AVC.version')
+        selfVersionRemote = verComp.getRemote(selfVersionLocal)
+        comp = verComp.versionComparator(selfVersionLocal, selfVersionRemote)
+        if not comp.compareName():
+            raise Exception("Remote version file is for %s" % comp.remote['NAME'])
+        if not comp.compareURL():
+            raise Exception("Remote version file reports different URL.")
+        if not comp.compareVersion():
+            print "  [UPDATE] A new version(%s) of KSP-AVC is available. (You have %s)" % \
+            (comp.getVersion('r'), comp.getVersion('l'))
+    except Exception as e:
+        print "[ERROR] Couldn't update KSP-AVC. %s" % e
+        cfg.save()
+        sys.exit(1)
 
     toUpdate = set()
-    for mod in findMods(cfg):
+    mods = findMods(cfg)
+    print "Starting add-on checks."
+    for mod in mods:
         remote = verComp.getRemote(mod)
         comp = verComp.versionComparator(mod, remote)
         modname = comp.local['NAME']
-        print "Checking %s" % modname
+        print "[ADD-ON] %s" % modname
         if not comp.compareName():
             print "  [ERROR] Online version file is for different mod (%s)." % comp.remote['NAME']
             print "          This is very bad. Check this mod's version manually!"
@@ -49,21 +72,16 @@ def main():
             print "            might be available at a new download location."
 
         if not comp.compareMajor() or not comp.compareMinor():
-            print "  [UPDATE] Latest version: %s, Installed version: %s" % (
-                comp.getVersion('l'),
-                comp.getVersion('r'))
+            print "  [UPDATE] Latest version: %s, Installed version: %s" % \
+                (comp.getVersion('r'), comp.getVersion('l'))
             toUpdate.add(modname)
-        elif not comp.compareBuild():
-            print "  [UPDATE] A new build (%s) is available for version %s." % (
-                comp.getBuild('r'), comp.getVersion('r'))
-            print "           New builds don't usually change enough to warrant updating."
-            print "           But it probably fixed a bug or 2. (You have build %s)" % comp.getBuild('l')
-        print ""
     # End for
-    print "You should update the following add-ons:"
-    print "    "+', '.join(toUpdate)
-
-
+    if len(toUpdate):
+        print ""
+        print "You should update the following add-ons:"
+        print "    "+', '.join(toUpdate)
+    else:
+        print "%s add-ons found, and none require an update!" % len(mods)
 
     #Shutdown procedure
     cfg.save()
