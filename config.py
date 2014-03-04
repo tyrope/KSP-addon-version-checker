@@ -5,7 +5,7 @@ Config Module for KSP Add-on Version Checker.
 # Copyright 2014 Dimitri "Tyrope" Molenaars
 
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use self file except in compliance with the License.
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 
 #    http://www.apache.org/licenses/LICENSE-2.0
@@ -27,8 +27,6 @@ class ConfigError(Exception):
 
 class Config(object):
 
-    needs_save = False
-
     def __init__(self, fn):
         """Get a config object to play with.
         Arguments: fn = path to config file.
@@ -43,18 +41,26 @@ class Config(object):
             self.parser.add_section('KSP')
 
         # Create default values if needed.
-        if not self.parser.has_option('KSP','install_dir'):
-            v = raw_input(
-            "Where did you install KSP?"+
-            "[e.g. C:\Program Files\Kerbal Space Program]: ")
-            if v.endswith('/') or v.endswith('\\'):
-                #remove trailing slash
-                v = v[:-1]
-            if v.endswith("gamedata"):
-                v = v[:-9]
-            self.parser.set('KSP', 'install_dir', v)
-            needs_save = True
-        self.save()
+        if not self.parser.has_option('KSP','gamedata_dir'):
+            v = ''
+            correctDir = False
+            while not correctDir:
+                v = raw_input('Where did you install KSP?'+
+                              '[e.g. F:\Games\KSP]: ')
+                if v.endswith('/') or v.endswith('\\'):
+                    # remove trailing slash
+                    v = v[:-1]
+                if not v.endswith("gamedata"):
+                    # We actually want the gamedata folder.
+                    # But just in case the user specified it..
+                    v = os.path.join(v,'gamedata')
+                if not os.path.exists(v):
+                    print "The folder you specified isn't a valid"+
+                    "KSP or gamedata folder. \n Please try again."
+                else:
+                    correctDir = True
+            self.parser.set('KSP', 'gamedata_dir', v)
+            self.save()
 
     def get(self, key, cat="KSP"):
         """Get a value from the configuration file."""
@@ -68,11 +74,9 @@ class Config(object):
 
     def save(self):
         """ Save configs to file. """
-        if(self.needs_save):
-            with open(self.configFile, 'w') as f:
-                self.parser.write(f)
-                f.flush()
-            self.needs_save = False
+        with open(self.configFile, 'w') as f:
+            self.parser.write(f)
+            f.flush()
 
 if __name__ == '__main__':
     print __doc__
