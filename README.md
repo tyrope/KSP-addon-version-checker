@@ -12,6 +12,5 @@ Have an online version available with the most recent information.
 
 players
 ---
-Just run this program. (.py file for linux/mac and the .exe for windows)
-If no configuration file is available it'll create one using a wizard.
+Just run main.py. If no configuration file is available it'll create one using a wizard.
 
