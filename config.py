@@ -50,12 +50,11 @@ class Config(object):
                 if v.endswith('/') or v.endswith('\\'):
                     # remove trailing slash
                     v = v[:-1]
-                if not v.endswith("gamedata"):
+                if v.lower().endswith("gamedata"):
                     # We actually want the gamedata folder.
-                    # But just in case the user specified it..
-                    v = os.path.join(v,'gamedata')
+                    v = os.path.join(v,'GameData')
                 if not os.path.exists(v):
-                    print "The folder you specified isn't a valid"+
+                    print "The folder you specified isn't a valid"
                     "KSP or gamedata folder. \n Please try again."
                 else:
                     correctDir = True
