@@ -50,7 +50,7 @@ class Config(object):
                 if v.endswith('/') or v.endswith('\\'):
                     # remove trailing slash
                     v = v[:-1]
-                if v.lower().endswith("gamedata"):
+                if not v.lower().endswith("gamedata"):
                     # We actually want the gamedata folder.
                     v = os.path.join(v,'GameData')
                 if not os.path.exists(v):
