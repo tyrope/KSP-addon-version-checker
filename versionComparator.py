@@ -18,26 +18,15 @@ allows comparing of the contents.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
+import json, os
 
 class versionComparator(object):
-    def __init__(self, local, remote):
-        self.localFile = local
-        self.remoteFile = remote
-
-    """ Turns the localFIle and remoteFile into json objects. """
-    def parseFiles(self):
-        # Sanity check
-        if self.localFile is None:
-            return False
-        if self.remoteFile is None:
-            return False
-
-        if type(self.localFile) != type({}):
-            self.localFile = json.loads(self.localFile)
-        if type(self.remoteFile) != type({}):
-            self.remoteFile = json.loads(self.remoteFile)
-        return True
+    """ Initialize the comparator. """
+    def __init__(self, l, r):
+        with open(l, 'r') as f:
+            self.local = json.load(f)
+        with open(r, 'r') as f:
+            self.remote = json.load(f)
 
     """ Gets the version in a tuple from a decoded json file. """
     def getVersion(json):
@@ -49,10 +38,8 @@ class versionComparator(object):
     1 = local file is outdated.
     -1 = Either of the files are invalid. """
     def compareMajor(self):
-        if not self.parseFiles():
-            return -1
-        v1 = getVersion(self.localFile)[0]
-        v2 = getVersion(self.remoteFile)[0]
+        v1 = getVersion(self.local)[0]
+        v2 = getVersion(self.remote)[0]
         if v1 == v2:
             return 0
         if v1 < v2:
@@ -63,10 +50,8 @@ class versionComparator(object):
     1 = local file is outdated.
     -1 = Either of the files are invalid. """
     def compareMinor(self):
-        if not self.parseFiles():
-            return -1
-        v1 = getVersion(self.localFile)[1]
-        v2 = getVersion(self.remoteFile)[1]
+        v1 = getVersion(self.local)[1]
+        v2 = getVersion(self.remote)[1]
         if v1 == v2:
             return 0
         if v1 < v2:
@@ -76,9 +61,16 @@ class versionComparator(object):
     If self returns false, the remote file failed loading
     or something went terribly wrong. """
     def compareSource(self):
-        if not parseFiles():
-            return False
-        return self.localfile['URL'] == self.remoteFile['URL']
+        return self.localfile['URL'] == self.remote['URL']
+
+""" Gets the URL for the remote file as stated in the local file. """
+def getRemote(fle):
+    if not os.path.exists(fle):
+        raise OSError("File not found.")
+
+    with open(fle,'r') as f:
+        json_dec = json.load(f)
+    return json_dec['URL']
 
 if __name__ == '__main__':
     print __doc__
