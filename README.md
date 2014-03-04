@@ -7,10 +7,12 @@ How-to use
 ===
 Modders
 ---
-Include a *.version file in your download with the JSON in example.version.
+Include a *.version file somewhere inside gamedata.
+use example.version and KSP-AVC.version as an example.
 Have an online version available with the most recent information.
 
 players
 ---
-Just run main.py. If no configuration file is available it'll create one using a wizard.
+Install python, Run main.py.
+If no configuration file is available it'll create one in ~/.KSP-AVC.
 
