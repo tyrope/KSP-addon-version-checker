@@ -30,12 +30,40 @@ def main():
         os.makedirs(cfg_dir)
 
     # Create config object.
+    #TODO Don't hardcode the file name.
     cfg = config.Config(os.path.join(cfg_dir, 'default.cfg'))
+    print "Configuration file loaded."
 
+    toUpdate = set()
     for mod in findMods(cfg):
         remote = verComp.getRemote(mod)
-        print "Found version file %s reporting remote %s" % (mod, remote)
-        # comp = verComp.versionComparator(mod, remote)
+        comp = verComp.versionComparator(mod, remote)
+        modname = comp.local['NAME']
+        print "Checking %s" % modname
+        if not comp.compareName():
+            print "  [ERROR] Online version file is for different mod (%s)." % comp.remote['NAME']
+            print "          This is very bad. Check this mod's version manually!"
+            continue
+        if not comp.compareSource():
+            print "  [WARNING] Online version has the wrong URL. A new version"
+            print "            might be available at a new download location."
+
+        if not comp.compareMajor() or not comp.compareMinor():
+            print "  [UPDATE] Latest version: %s, Installed version: %s" % (
+                comp.getVersion('l'),
+                comp.getVersion('r'))
+            toUpdate.add(modname)
+        elif not comp.compareBuild():
+            print "  [UPDATE] A new build (%s) is available for version %s." % (
+                comp.getBuild('r'), comp.getVersion('r'))
+            print "           New builds don't usually change enough to warrant updating."
+            print "           But it probably fixed a bug or 2. (You have build %s)" % comp.getBuild('l')
+        print ""
+    # End for
+    print "You should update the following add-ons:"
+    print "    "+', '.join(toUpdate)
+
+
 
     #Shutdown procedure
     cfg.save()
