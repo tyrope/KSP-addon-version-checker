@@ -47,10 +47,13 @@ class versionComparator(object):
             return '0.0'
         return '%s.%s' % (v['VERSION']['MAJOR'], v['VERSION']['MINOR'])
 
+    def compareVersion(self):
+        return self.compareMajor and self.compareMinor
+
     """ Ensures the remote file is from the proper source.
     If this returns false, the remote file failed loading
     or something went terribly wrong. """
-    def compareSource(self):
+    def compareURL(self):
         return self.local['URL'] == self.remote['URL']
 
     """ Ensures the remote file is for the same mod.
