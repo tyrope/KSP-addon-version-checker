@@ -67,7 +67,7 @@ def main():
             print "  [ERROR] Online version file is for different mod (%s)." % comp.remote['NAME']
             print "          This is very bad. Check this mod's version manually!"
             continue
-        if not comp.compareSource():
+        if not comp.compareURL():
             print "  [WARNING] Online version has the wrong URL. A new version"
             print "            might be available at a new download location."
 
