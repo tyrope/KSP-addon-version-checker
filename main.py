@@ -56,11 +56,12 @@ def main():
         sys.exit(1)
 
     toUpdate = set()
-    mods = findMods(cfg)
     print "Starting add-on checks."
-    for mod in mods:
+    for mod in findMods(cfg):
         remote = verComp.getRemote(mod)
         comp = verComp.versionComparator(mod, remote)
+        if comp == False:
+            continue
         modname = comp.local['NAME']
         print "[ADD-ON] %s" % modname
         if not comp.compareName():

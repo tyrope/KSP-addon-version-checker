@@ -25,9 +25,16 @@ class versionComparator(object):
     """ Initialize the comparator. """
     def __init__(self, l, r):
         with open(l, 'r') as f:
-            self.local = json.load(f)
+            try:
+                self.local = json.load(f)
+            except ValueError as e:
+                print "Version file has an invalid format."
+                return False
         f = urlopen(r)
-        self.remote = json.load(f)
+        try:
+            self.remote = json.load(f)
+        except ValueError as e:
+            print "Failed to load remote for mod %s. Error: %s" % (self.local['NAME'], e)
         f.close()
 
     """ Are the major versions equal? """
