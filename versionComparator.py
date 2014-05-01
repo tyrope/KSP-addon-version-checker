@@ -45,6 +45,11 @@ class versionComparator(object):
     def compareMinor(self):
         return self.local['VERSION']['MINOR'] == self.remote['VERSION']['MINOR']
 
+    """ Are the patches equal? """
+    def comparePatch(self):
+        return self.local['VERSION']['PATCH'] == self.remote['VERSION']['PATCH']
+
+
     def getVersion(self, side):
         if side in ('l','local'):
             v = self.local
@@ -52,10 +57,10 @@ class versionComparator(object):
             v = self.remote
         else:
             return '0.0'
-        return '%s.%s' % (v['VERSION']['MAJOR'], v['VERSION']['MINOR'])
+        return '%s.%s.%s' % (v['VERSION']['MAJOR'], v['VERSION']['MINOR'], v['VERSION']['PATCH'])
 
     def compareVersion(self):
-        return self.compareMajor and self.compareMinor
+        return self.compareMajor and self.compareMinor and self.comparePatch
 
     """ Ensures the remote file is from the proper source.
     If this returns false, the remote file failed loading

@@ -72,15 +72,16 @@ def main():
             print "  [WARNING] Online version has the wrong URL. A new version"
             print "            might be available at a new download location."
 
-        if not comp.compareMajor() or not comp.compareMinor():
+        if not comp.compareVersion():
             print "  [UPDATE] Latest version: %s, Installed version: %s" % \
                 (comp.getVersion('r'), comp.getVersion('l'))
             toUpdate.add(modname)
     # End for
     if len(toUpdate):
-        print ""
-        print "You should update the following add-ons:"
-        print "    "+', '.join(toUpdate)
+        print "%s add-ons found." % len(mods)
+        print "You should update the following add-ons: "
+        for mod in toUpdate:
+            print "    %s." % (mod,)
     else:
         print "%s add-ons found, and none require an update!" % len(mods)
 
