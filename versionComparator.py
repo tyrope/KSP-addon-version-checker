@@ -40,19 +40,19 @@ class versionComparator(object):
             print "Failed to load remote for mod %s. Error: %s" % (self.local['NAME'], e)
         f.close()
 
-    """ Are the major versions equal? """
+    """ Are the add-on's major versions equal? """
     def compareMajor(self):
         return self.local['VERSION']['MAJOR'] == self.remote['VERSION']['MAJOR']
 
-    """ Are the minor versions equal? """
+    """ Are the add-on's minor versions equal? """
     def compareMinor(self):
         return self.local['VERSION']['MINOR'] == self.remote['VERSION']['MINOR']
 
-    """ Are the patches equal? """
+    """ Are the add-on's patches equal? """
     def comparePatch(self):
         return self.local['VERSION']['PATCH'] == self.remote['VERSION']['PATCH']
 
-
+    """ Print a human readable version string. """
     def getVersion(self, side):
         if side in ('l','local'):
             v = self.local
@@ -62,8 +62,22 @@ class versionComparator(object):
             return '0.0'
         return '%s.%s.%s' % (v['VERSION']['MAJOR'], v['VERSION']['MINOR'], v['VERSION']['PATCH'])
 
+    """ shorthand for compareMajor and compareMinor and comparePatch """
     def compareVersion(self):
         return self.compareMajor and self.compareMinor and self.comparePatch
+
+    """ Compare the supported version of Kerbal Space Program for this add-on """
+    def compareKSP(self):
+        try:
+            if not self.local['KSP_VERSION']['MAJOR'] == self.remote['KSP_VERSION']['MAJOR'] \
+            or not self.local['KSP_VERSION']['MINOR'] == self.remote['KSP_VERSION']['MINOR'] \
+            or not self.local['KSP_VERSION']['PATCH'] == self.remote['KSP_VERSION']['PATCH']:
+                return False
+            return True
+        except KeyError as e:
+            # The KSP_VERSION key or any of it's children is not found.
+            # Let's be nice and assume it'll work.
+            return True
 
     """ Ensures the remote file is from the proper source.
     If this returns false, the remote file failed loading

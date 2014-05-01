@@ -79,7 +79,11 @@ def main():
             print "  [UPDATE] Latest version: %s, Installed version: %s" % \
                 (comp.getVersion('r'), comp.getVersion('l'))
             toUpdate.add(modname)
+            if not comp.compareKSP():
+                print "  [INFO] %s %s is for KSP %s, while the latest version is for KSP %s." % \
+                    (modname, comp.getVersion('l'), comp.getKSP('l'), comp.getKSP('r'))
     # End for
+
     if len(toUpdate):
         print "%s add-ons found." % len(mods)
         print "You should update the following add-ons: "
