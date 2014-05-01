@@ -3,13 +3,13 @@
     "URL": "https://raw.github.com/tyrope/KSP-addon-version-checker/master/KSP-AVC.version",
     "VERSION": {
         "MAJOR": 0,
-        "MINOR": 2,
-        "PATCH": 1
-    },
+        "MINOR": 3,
+        "PATCH": 0
+    }
     "KSP_VERSION": {
-        "MAJOR": 0,
-        "MINOR": 23,
-        "PATCH": 5
+        "MAJOR": 999,
+        "MINOR": 999,
+        "PATCH": 999
     }
 }
 
