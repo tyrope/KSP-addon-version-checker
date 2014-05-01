@@ -23,11 +23,11 @@ Players
 FAQ
 ===
 
-Q. What is this *.version file in my GameData directory? Where did it come from?
-A. That file is used to declare which version of a mod you're using. It contains enough information for our script to check online to see if there are any new versions of the mod.
+### What is this *.version file in my GameData directory? Where did it come from?
+That file is used to declare which version of a mod you're using. It contains enough information for our script to check online to see if there are any new versions of the mod.
 
-Q. This mod doesn't contain a *.version file? How can I fix that?
-A. Politely ask the mod maintainer, or even better, send them a completed version file and point them at this FAQ.
+### This mod doesn't contain a *.version file? How can I fix that?
+Politely ask the mod maintainer, or even better, send them a completed version file and point them at this FAQ.
 
-Q. Why don't you include a link to KSP-AVC in the version file to help advertise?
-A. We wanted to create a file that any mod or script author would feel comfortable using. We felt it was important to ensure that other scripters, and possibly better programmers than we are, could use this work to build something really, really awesome. Who knows, maybe even Squad might be able to use this info to help with Spaceport! In the end, we care more about whether our mods are up-to-date than we do about being the authors of a script that everyone uses. 
+### Why don't you include a link to KSP-AVC in the version file to help advertise?
+We wanted to create a file that any mod or script author would feel comfortable using. We felt it was important to ensure that other scripters, and possibly better programmers than we are, could use this work to build something really, really awesome. Who knows, maybe even Squad might be able to use this info to help with Spaceport! In the end, we care more about whether our mods are up-to-date than we do about being the authors of a script that everyone uses. 
