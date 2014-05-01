@@ -19,7 +19,7 @@ allows comparing of the contents.
 # limitations under the License.
 
 import json, os
-from urllib2 import urlopen
+from urllib2 import urlopen, HTTPError
 
 class versionComparator(object):
     """ Initialize the comparator. """
@@ -30,7 +30,10 @@ class versionComparator(object):
             except ValueError as e:
                 print "Version file has an invalid format."
                 return False
-        f = urlopen(r)
+        try:
+            f = urlopen(r)
+        except HTTPError as e:
+            print "Failed to open remote for mod %s. Error: %s" % (self.local['NAME'], e)
         try:
             self.remote = json.load(f)
         except ValueError as e:

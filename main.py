@@ -44,12 +44,14 @@ def main():
         selfVersionRemote = verComp.getRemote(selfVersionLocal)
         comp = verComp.versionComparator(selfVersionLocal, selfVersionRemote)
         if not comp.compareName():
-            raise Exception("Remote version file is for %s" % comp.remote['NAME'])
-        if not comp.compareURL():
-            raise Exception("Remote version file reports different URL.")
-        if not comp.compareVersion():
-            print "  [UPDATE] A new version(%s) of KSP-AVC is available. (You have %s)" % \
+            raise Exception("KSP-AVC's remote version file is for %s" % comp.remote['NAME'])
+        elif not comp.compareURL():
+            raise Exception("KSP-AVC's remote version file reports different URL.")
+        elif not comp.compareVersion():
+            print "[UPDATE] A new version (%s) of KSP-AVC is available. (You have %s)" % \
             (comp.getVersion('r'), comp.getVersion('l'))
+        else:
+            print "KSP-AVC is up to date."
     except Exception as e:
         print "[ERROR] Couldn't update KSP-AVC. %s" % e
         cfg.save()
@@ -57,7 +59,8 @@ def main():
 
     toUpdate = set()
     print "Starting add-on checks."
-    for mod in findMods(cfg):
+    mods = findMods(cfg)
+    for mod in mods:
         remote = verComp.getRemote(mod)
         comp = verComp.versionComparator(mod, remote)
         if comp == False:
