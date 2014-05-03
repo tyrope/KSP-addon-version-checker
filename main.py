@@ -63,7 +63,7 @@ def main():
     for mod in mods:
         remote = verComp.getRemote(mod)
         comp = verComp.versionComparator(mod, remote)
-        if comp == False:
+        if comp.valid == False:
             continue
         modname = comp.local['NAME']
         print "[ADD-ON] %s" % modname

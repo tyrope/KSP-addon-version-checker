@@ -29,16 +29,23 @@ class versionComparator(object):
                 self.local = json.load(f)
             except ValueError as e:
                 print "Version file has an invalid format."
-                return False
+                self.valid = False
+                return
         try:
             f = urlopen(r)
         except HTTPError as e:
             print "Failed to open remote for mod %s. Error: %s" % (self.local['NAME'], e)
+            self.valid = False
+            return
         try:
             self.remote = json.load(f)
         except ValueError as e:
             print "Failed to load remote for mod %s. Error: %s" % (self.local['NAME'], e)
+            print r.split('/')[-1] #DEBUG
+            self.valid = False
+            return
         f.close()
+        self.valid = True
 
     """ Are the add-on's major versions equal? """
     def compareMajor(self):
@@ -60,11 +67,21 @@ class versionComparator(object):
             v = self.remote
         else:
             return '0.0'
-        return '%s.%s.%s' % (v['VERSION']['MAJOR'], v['VERSION']['MINOR'], v['VERSION']['PATCH'])
+        try:
+            #KSP-AVC 0.3 lay-out
+            return '%s.%s.%s' % (v['VERSION']['MAJOR'], v['VERSION']['MINOR'], v['VERSION']['PATCH'])
+        except KeyError as e:
+            #KSP-AVC 0.4 lay-out.
+            return v['VERSION']
 
     """ shorthand for compareMajor and compareMinor and comparePatch """
     def compareVersion(self):
-        return self.compareMajor and self.compareMinor and self.comparePatch
+        try:
+            #KSP-AVC 3.0 lay-out
+            return self.compareMajor and self.compareMinor and self.comparePatch
+        except KeyError as e:
+            #KSP-AVC 0.4 lay-out.
+            return self.local['VERSION'] == self.remote['VERSION']
 
     """ Compare the supported version of Kerbal Space Program for this add-on """
     def compareKSP(self):
